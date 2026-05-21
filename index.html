@@ -5,19 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Le Mans Playlist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
-    --accent: #e8ff00;
-    --accent2: #ff4d00;
-    --text: #f0f0f0;
-    --muted: #666;
-    --yes: #00e676;
-    --no: #ff1744;
+    --bg:       #0d0d1a;
+    --surface:  #13132a;
+    --surface2: #1a1a36;
+    --border:   #2a2a50;
+    --blue:     #002395;   /* French tricolore blue */
+    --red:      #ED2939;   /* French tricolore red */
+    --cream:    #f5f0e8;   /* parchment */
+    --gold:     #c9a84c;   /* Gallic gold */
+    --text:     #e8e4f0;
+    --muted:    #6b6890;
+    --yes:      #4caf7d;
+    --no:       #e05a5a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,6 +32,19 @@
     overflow-x: hidden;
   }
 
+  /* ── TRICOLORE STRIPE ── */
+  .tricolore {
+    display: flex;
+    height: 4px;
+    width: 100%;
+  }
+  .tricolore span {
+    flex: 1;
+  }
+  .tricolore .t-blue  { background: var(--blue); }
+  .tricolore .t-white { background: #fff; }
+  .tricolore .t-red   { background: var(--red); }
+
   /* ── LOGIN ── */
   #login-screen {
     min-height: 100vh;
@@ -37,296 +52,396 @@
     align-items: center; justify-content: center;
     padding: 2rem; position: relative; overflow: hidden;
   }
+
   #login-screen::before {
     content: '';
-    position: absolute; top: -200px; left: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(232,255,0,0.06) 0%, transparent 70%);
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0,35,149,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(237,41,57,0.12) 0%, transparent 60%);
     pointer-events: none;
   }
-  #login-screen::after {
-    content: 'LE MANS 2025';
-    position: absolute; bottom: 2rem; right: 2rem;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.9rem; letter-spacing: 0.3em; color: var(--muted); opacity: 0.4;
+
+  .login-flag-vert {
+    display: flex;
+    height: 80px;
+    width: 60px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    flex-shrink: 0;
   }
-  .login-flag { display: flex; gap: 6px; margin-bottom: 2rem; }
-  .login-flag span { display: block; width: 18px; height: 60px; }
-  .flag-black { background: #111; border: 1px solid #333; }
-  .flag-white { background: #eee; }
+  .login-flag-vert span { flex: 1; }
+  .fv-blue  { background: var(--blue); }
+  .fv-white { background: #f8f8f8; }
+  .fv-red   { background: var(--red); }
+
   .login-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 12vw, 5.5rem);
-    letter-spacing: 0.05em; line-height: 0.9;
-    text-align: center; margin-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 11vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--cream);
   }
-  .login-title span { color: var(--accent); display: block; }
+  .login-title span {
+    color: var(--gold);
+    display: block;
+    font-size: 0.55em;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 0.4rem;
+  }
+
   .login-sub {
-    color: var(--muted); font-size: 0.85rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    margin-bottom: 3rem; text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    text-align: center;
   }
+
   .user-select {
-    display: flex; flex-direction: column; gap: 0.75rem;
-    width: 100%; max-width: 320px; margin-bottom: 1.5rem;
+    display: flex; flex-direction: column; gap: 0.65rem;
+    width: 100%; max-width: 300px;
   }
+
   .user-btn {
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 1rem 1.5rem; border-radius: 4px;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500;
-    cursor: pointer; transition: all 0.15s;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 1.25rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    cursor: pointer; transition: all 0.18s;
     text-align: left; display: flex; align-items: center; gap: 0.75rem;
   }
-  .user-btn:hover { border-color: var(--accent); background: rgba(232,255,0,0.05); }
+  .user-btn:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+    transform: translateX(3px);
+  }
+
   .avatar {
-    width: 32px; height: 32px; border-radius: 50%;
+    width: 34px; height: 34px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
   }
-  .avatar-matt  { background: var(--accent); color: #000; }
-  .avatar-alex  { background: #00b4d8; color: #000; }
-  .avatar-james { background: var(--accent2); color: #fff; }
+  .av-matt  { background: var(--blue); color: #fff; }
+  .av-alex  { background: var(--red);  color: #fff; }
+  .av-james { background: var(--gold); color: #000; }
+
   .pin-screen {
-    width: 100%; max-width: 320px;
+    width: 100%; max-width: 300px;
     display: none; flex-direction: column; align-items: center; gap: 1.5rem;
   }
   .pin-screen.active { display: flex; }
-  .pin-label { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  .pin-label {
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
   .pin-dots { display: flex; gap: 1rem; }
   .pin-dot {
-    width: 14px; height: 14px; border-radius: 50%;
+    width: 13px; height: 13px; border-radius: 50%;
     border: 2px solid var(--border); transition: all 0.15s;
   }
-  .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
-  .pin-dot.error  { background: var(--no); border-color: var(--no); }
-  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; width: 100%; }
+  .pin-dot.filled { background: var(--gold); border-color: var(--gold); }
+  .pin-dot.error  { background: var(--no);   border-color: var(--no); }
+
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; width: 100%; }
   .pin-key {
     background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 1.1rem; border-radius: 4px;
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
-    cursor: pointer; transition: all 0.1s; text-align: center;
+    color: var(--text); padding: 1rem; border-radius: 6px;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+    cursor: pointer; transition: all 0.12s; text-align: center;
   }
-  .pin-key:hover  { background: var(--surface2); border-color: var(--accent); }
-  .pin-key:active { transform: scale(0.95); }
-  .pin-key.clear  { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
+  .pin-key:hover  { background: var(--surface2); border-color: var(--gold); }
+  .pin-key:active { transform: scale(0.94); }
+  .pin-key.clear  { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; }
+
   .back-btn {
     background: none; border: none; color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
-    cursor: pointer; text-decoration: underline; margin-top: 0.5rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    cursor: pointer; text-decoration: underline;
   }
-  .login-error { color: var(--no); font-size: 0.85rem; min-height: 1.2em; text-align: center; }
+  .login-error { color: var(--no); font-size: 0.82rem; min-height: 1.2em; text-align: center; }
 
   /* ── MAIN APP ── */
   #app { display: none; min-height: 100vh; flex-direction: column; }
   #app.active { display: flex; }
+
   .top-bar {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.7rem 1rem;
+    display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
   }
-  .top-bar-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.08em; color: var(--accent); }
-  .top-bar-user  { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--muted); }
-  .status-dot    { width: 8px; height: 8px; border-radius: 50%; }
+  .top-bar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.02em;
+  }
+  .top-bar-right { display: flex; align-items: center; gap: 0.6rem; }
+  .top-bar-user  { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--muted); }
+  .status-dot    { width: 7px; height: 7px; border-radius: 50%; }
   .logout-btn {
     background: none; border: 1px solid var(--border); color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: 0.75rem;
-    padding: 0.3rem 0.6rem; border-radius: 3px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+    padding: 0.28rem 0.6rem; border-radius: 4px; cursor: pointer;
+    transition: border-color 0.15s;
   }
+  .logout-btn:hover { border-color: var(--muted); }
+
   .nav {
     display: flex; border-bottom: 1px solid var(--border);
-    background: var(--surface); position: sticky; top: 53px; z-index: 99;
+    background: var(--surface); position: sticky; top: 49px; z-index: 99;
   }
   .nav-btn {
     flex: 1; background: none; border: none; color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500;
-    letter-spacing: 0.05em; text-transform: uppercase; padding: 0.9rem 0.5rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase; padding: 0.85rem 0.5rem;
     cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; position: relative;
   }
-  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
   .nav-badge {
-    position: absolute; top: 6px; right: calc(50% - 20px);
-    background: var(--accent2); color: #fff; font-size: 0.6rem; font-weight: 700;
-    width: 16px; height: 16px; border-radius: 50%;
+    position: absolute; top: 5px; right: calc(50% - 22px);
+    background: var(--red); color: #fff;
+    font-size: 0.58rem; font-weight: 700;
+    width: 15px; height: 15px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
   }
-  .view { display: none; padding: 1.25rem 1rem; flex: 1; }
+
+  .view { display: none; padding: 1.1rem 1rem; flex: 1; }
   .view.active { display: block; }
 
-  /* ── ADD VIEW ── */
-  .search-bar { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+  /* ── SPOTIFY CONNECT ── */
+  .not-connected {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 2rem; text-align: center;
+  }
+  .not-connected p { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.5; }
+
+  .spotify-connect-btn {
+    background: #1db954; border: none; color: #fff;
+    padding: 0.75rem 1.5rem; border-radius: 24px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.88rem;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: opacity 0.15s;
+  }
+  .spotify-connect-btn:hover { opacity: 0.85; }
+
+  .spotify-connected-note {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(29,185,84,0.08); border: 1px solid rgba(29,185,84,0.2);
+    border-radius: 6px; padding: 0.6rem 0.9rem; margin-bottom: 1rem;
+    font-size: 0.8rem; color: #1db954;
+  }
+
+  /* ── SEARCH ── */
+  .search-bar { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
   .search-input {
     flex: 1; background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 0.75rem 1rem; border-radius: 4px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.15s;
+    color: var(--text); padding: 0.7rem 1rem; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem; outline: none;
+    transition: border-color 0.15s;
   }
-  .search-input:focus { border-color: var(--accent); }
+  .search-input:focus { border-color: var(--gold); }
   .search-input::placeholder { color: var(--muted); }
+
   .search-btn {
-    background: var(--accent); border: none; color: #000;
-    padding: 0.75rem 1.25rem; border-radius: 4px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+    background: var(--gold); border: none; color: #000;
+    padding: 0.7rem 1.2rem; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.88rem;
     cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
   }
   .search-btn:hover    { opacity: 0.85; }
   .search-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .spotify-note {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: rgba(29,185,84,0.1); border: 1px solid rgba(29,185,84,0.2);
-    border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 1rem;
-    font-size: 0.82rem; color: #1db954;
-  }
-  .not-connected {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 4px; padding: 2rem; text-align: center;
-  }
-  .not-connected p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.25rem; }
-  .spotify-connect-btn {
-    background: #1db954; border: none; color: #fff;
-    padding: 0.8rem 1.5rem; border-radius: 24px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
-    cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: opacity 0.15s;
-  }
-  .spotify-connect-btn:hover { opacity: 0.85; }
+
   .track-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
-    padding: 0.75rem; display: flex; align-items: center; gap: 0.75rem;
-    margin-bottom: 0.5rem; transition: border-color 0.15s;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.7rem; display: flex; align-items: center; gap: 0.7rem;
+    margin-bottom: 0.45rem; transition: border-color 0.15s;
   }
-  .track-card:hover { border-color: #444; }
-  .track-art { width: 48px; height: 48px; border-radius: 3px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
+  .track-card:hover { border-color: #3a3a60; }
+  .track-art { width: 46px; height: 46px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
   .track-info { flex: 1; min-width: 0; }
-  .track-name   { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .track-artist { color: var(--muted); font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-  .track-duration { color: var(--muted); font-size: 0.75rem; flex-shrink: 0; }
+  .track-name   { font-weight: 600; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-artist { color: var(--muted); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .track-duration { color: var(--muted); font-size: 0.73rem; flex-shrink: 0; }
+
   .nominate-btn {
-    background: var(--accent); border: none; color: #000;
-    padding: 0.45rem 0.9rem; border-radius: 3px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.78rem;
+    border: none; padding: 0.4rem 0.8rem; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.75rem;
     cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+    background: var(--gold); color: #000;
   }
   .nominate-btn:hover { opacity: 0.85; }
   .nominate-btn.already  { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; }
-  .nominate-btn.rejected { background: rgba(255,23,68,0.1); color: var(--no); border: 1px solid var(--no); cursor: default; font-size: 0.72rem; }
-  .search-state { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 2rem 1rem; }
+  .nominate-btn.rejected { background: rgba(224,90,90,0.1); color: var(--no); border: 1px solid var(--no); cursor: default; }
 
-  /* ── QUEUE VIEW ── */
-  .queue-empty { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 3rem 1rem; }
-  .queue-card  { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; margin-bottom: 0.75rem; }
-  .queue-card-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+  .search-state { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 2rem 1rem; }
+
+  /* ── QUEUE ── */
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.75rem;
+  }
+  .queue-empty    { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 3rem 1rem; }
+  .playlist-empty { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 3rem 1rem; }
+
+  .queue-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.85rem; margin-bottom: 0.65rem;
+  }
+  .queue-card-top { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.85rem; }
   .queue-track-info { flex: 1; min-width: 0; }
-  .queue-nominator { font-size: 0.72rem; color: var(--muted); margin-top: 3px; display: flex; align-items: center; gap: 0.3rem; }
+  .queue-nominator {
+    font-size: 0.7rem; color: var(--muted); margin-top: 3px;
+    display: flex; align-items: center; gap: 0.3rem;
+  }
   .nominator-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
   .vote-pips { display: flex; align-items: center; gap: 4px; margin-bottom: 3px; }
   .vote-pip  { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--border); }
   .vote-pip.yes { background: var(--yes); border-color: var(--yes); }
   .vote-pip.no  { background: var(--no);  border-color: var(--no); }
-  .vote-label { font-size: 0.72rem; color: var(--muted); }
+  .vote-tally { font-size: 0.7rem; color: var(--muted); }
+
   .queue-actions { display: flex; gap: 0.5rem; }
   .vote-btn {
-    flex: 1; padding: 0.55rem; border-radius: 3px; border: 1px solid;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.8rem;
+    flex: 1; padding: 0.52rem; border-radius: 5px; border: 1px solid;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.78rem;
     cursor: pointer; transition: all 0.15s;
   }
-  .vote-btn.yes-btn { background: rgba(0,230,118,0.08); border-color: rgba(0,230,118,0.3); color: var(--yes); }
-  .vote-btn.yes-btn:hover:not(:disabled) { background: rgba(0,230,118,0.18); border-color: var(--yes); }
-  .vote-btn.no-btn  { background: rgba(255,23,68,0.08);  border-color: rgba(255,23,68,0.3);  color: var(--no); }
-  .vote-btn.no-btn:hover:not(:disabled)  { background: rgba(255,23,68,0.18);  border-color: var(--no); }
-  .vote-btn:disabled { opacity: 0.35; cursor: default; }
-  .vote-btn.voted-yes { background: rgba(0,230,118,0.2); border-color: var(--yes); }
-  .vote-btn.voted-no  { background: rgba(255,23,68,0.2);  border-color: var(--no); }
-  .own-vote-label { text-align: center; font-size: 0.75rem; color: var(--muted); padding: 0.4rem; }
+  .vote-btn.yes-btn { background: rgba(76,175,125,0.08); border-color: rgba(76,175,125,0.3); color: var(--yes); }
+  .vote-btn.yes-btn:hover:not(:disabled) { background: rgba(76,175,125,0.18); border-color: var(--yes); }
+  .vote-btn.no-btn  { background: rgba(224,90,90,0.08);  border-color: rgba(224,90,90,0.3);  color: var(--no); }
+  .vote-btn.no-btn:hover:not(:disabled)  { background: rgba(224,90,90,0.18);  border-color: var(--no); }
+  .vote-btn:disabled  { opacity: 0.35; cursor: default; }
+  .vote-btn.voted-yes { background: rgba(76,175,125,0.2); border-color: var(--yes); }
+  .vote-btn.voted-no  { background: rgba(224,90,90,0.2);  border-color: var(--no); }
+  .own-vote-label { text-align: center; font-size: 0.73rem; color: var(--muted); padding: 0.4rem; }
 
-  /* ── PLAYLIST VIEW ── */
+  /* ── PLAYLIST ── */
   .playlist-header {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 4px; padding: 1rem; margin-bottom: 0.75rem;
+    border-radius: 6px; padding: 0.9rem 1rem; margin-bottom: 0.9rem;
     display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    flex-wrap: wrap;
   }
-  .playlist-stats { font-size: 0.82rem; color: var(--muted); }
-  .playlist-stats strong { color: var(--text); font-size: 1rem; display: block; margin-bottom: 2px; }
-  .playlist-header-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-  .open-spotify-btn {
+  .playlist-stats strong { color: var(--cream); font-size: 1rem; display: block; margin-bottom: 2px; }
+  .playlist-stats span   { color: var(--muted); font-size: 0.8rem; }
+
+  .playlist-header-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+  .sync-btn {
     background: #1db954; border: none; color: #fff;
     padding: 0.5rem 1rem; border-radius: 20px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.8rem;
-    cursor: pointer; text-decoration: none;
-    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.78rem;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: opacity 0.15s;
   }
+  .sync-btn:hover    { opacity: 0.85; }
+  .sync-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* ── SYNC BUTTON ── */
-  .sync-btn {
-    background: transparent;
-    border: 1px solid #1db954;
-    color: #1db954;
+  .sync-connect-btn {
+    background: transparent; border: 1px solid #1db954; color: #1db954;
     padding: 0.5rem 1rem; border-radius: 20px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.78rem;
     cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
     transition: all 0.15s;
   }
-  .sync-btn:hover    { background: rgba(29,185,84,0.1); }
-  .sync-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .sync-connect-btn:hover { background: rgba(29,185,84,0.1); }
+
+  .open-spotify-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 0.5rem 1rem; border-radius: 20px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.78rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: all 0.15s;
+  }
+  .open-spotify-btn:hover { border-color: var(--muted); color: var(--text); }
 
   .playlist-item {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 4px; padding: 0.75rem; margin-bottom: 0.5rem;
-    display: flex; align-items: center; gap: 0.75rem;
+    border-radius: 6px; padding: 0.7rem 0.8rem; margin-bottom: 0.45rem;
+    display: flex; align-items: center; gap: 0.7rem;
   }
-  .playlist-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--muted); width: 24px; text-align: center; flex-shrink: 0; }
+  .playlist-num { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--muted); width: 22px; text-align: center; flex-shrink: 0; }
   .playlist-track-info { flex: 1; min-width: 0; }
   .remove-btn {
     background: none; border: none; color: var(--muted);
-    font-size: 1.1rem; cursor: pointer; padding: 0.25rem;
+    font-size: 1rem; cursor: pointer; padding: 0.2rem;
     border-radius: 3px; transition: color 0.15s; flex-shrink: 0;
   }
   .remove-btn:hover { color: var(--no); }
-  .playlist-empty { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 3rem 1rem; }
 
   /* ── TOAST ── */
   .toast {
     position: fixed; bottom: 1.5rem; left: 50%;
-    transform: translateX(-50%) translateY(100px);
+    transform: translateX(-50%) translateY(120px);
     background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text); padding: 0.75rem 1.25rem; border-radius: 4px;
-    font-size: 0.85rem; z-index: 999; transition: transform 0.3s ease;
-    max-width: 90vw; text-align: center;
+    color: var(--text); padding: 0.7rem 1.2rem; border-radius: 6px;
+    font-size: 0.83rem; z-index: 999; transition: transform 0.28s ease;
+    max-width: 88vw; text-align: center; pointer-events: none;
   }
   .toast.show    { transform: translateX(-50%) translateY(0); }
   .toast.success { border-color: var(--yes); color: var(--yes); }
   .toast.error   { border-color: var(--no);  color: var(--no); }
 
   .spinner {
-    display: inline-block; width: 16px; height: 16px;
-    border: 2px solid var(--border); border-top-color: var(--accent);
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
     border-radius: 50%; animation: spin 0.6s linear infinite;
-    vertical-align: middle; margin-right: 0.4rem;
+    vertical-align: middle; margin-right: 0.35rem;
   }
-  .spinner-green { border-color: rgba(29,185,84,0.3); border-top-color: #1db954; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .section-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }
-
-  .dot-matt  { background: var(--accent); }
-  .dot-alex  { background: #00b4d8; }
-  .dot-james { background: var(--accent2); }
+  /* user dot colours */
+  .dot-matt  { background: var(--blue); }
+  .dot-alex  { background: var(--red); }
+  .dot-james { background: var(--gold); }
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login-screen">
-  <div class="login-flag">
-    <span class="flag-black"></span><span class="flag-white"></span>
-    <span class="flag-black"></span><span class="flag-white"></span>
+  <div class="login-flag-vert">
+    <span class="fv-blue"></span>
+    <span class="fv-white"></span>
+    <span class="fv-red"></span>
   </div>
-  <div class="login-title">Road Trip<span>Playlist</span></div>
-  <div class="login-sub">Le Mans · June 2025</div>
+  <div class="login-title">
+    Le Mans
+    <span>Road Trip Mix</span>
+  </div>
+  <div class="login-sub">Juin 2025 · Circuit de la Sarthe</div>
+
   <div class="user-select" id="user-select">
-    <button class="user-btn" onclick="selectUser('Matt')"><div class="avatar avatar-matt">M</div>Matt</button>
-    <button class="user-btn" onclick="selectUser('Alex')"><div class="avatar avatar-alex">A</div>Alex</button>
-    <button class="user-btn" onclick="selectUser('James')"><div class="avatar avatar-james">J</div>James</button>
+    <button class="user-btn" onclick="selectUser('Matt')">
+      <div class="avatar av-matt">M</div>Matt
+    </button>
+    <button class="user-btn" onclick="selectUser('Alex')">
+      <div class="avatar av-alex">A</div>Alex
+    </button>
+    <button class="user-btn" onclick="selectUser('James')">
+      <div class="avatar av-james">J</div>James
+    </button>
   </div>
+
   <div class="pin-screen" id="pin-screen">
-    <div class="pin-label">PIN for <span id="pin-username"></span></div>
+    <div class="pin-label">Code PIN — <span id="pin-username"></span></div>
     <div class="pin-dots">
       <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
       <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
@@ -346,90 +461,89 @@
       <button class="pin-key clear" onclick="pinBack()">←</button>
     </div>
     <div class="login-error" id="pin-error"></div>
-    <button class="back-btn" onclick="backToUsers()">← Back</button>
+    <button class="back-btn" onclick="backToUsers()">← Retour</button>
   </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="app">
+  <div class="tricolore"><span class="t-blue"></span><span class="t-white"></span><span class="t-red"></span></div>
   <div class="top-bar">
     <div class="top-bar-title">🏁 Le Mans Mix</div>
-    <div style="display:flex;align-items:center;gap:0.75rem;">
+    <div class="top-bar-right">
       <div class="top-bar-user">
         <div class="status-dot" id="user-dot"></div>
         <span id="user-label"></span>
       </div>
-      <button class="logout-btn" onclick="logout()">Sign out</button>
+      <button class="logout-btn" onclick="logout()">Sortir</button>
     </div>
   </div>
 
   <div class="nav">
-    <button class="nav-btn active" id="nav-add"      onclick="showView('add')">＋ Add</button>
-    <button class="nav-btn"        id="nav-queue"    onclick="showView('queue')">Voting <span class="nav-badge" id="queue-badge" style="display:none"></span></button>
+    <button class="nav-btn active" id="nav-add"      onclick="showView('add')">＋ Ajouter</button>
+    <button class="nav-btn"        id="nav-queue"    onclick="showView('queue')">
+      Votes <span class="nav-badge" id="queue-badge" style="display:none"></span>
+    </button>
     <button class="nav-btn"        id="nav-playlist" onclick="showView('playlist')">Playlist</button>
   </div>
 
-  <!-- ADD -->
+  <!-- ADD VIEW -->
   <div class="view active" id="view-add">
-    <div id="spotify-connect-area">
+    <div id="spotify-connect-area" style="display:none">
       <div class="not-connected">
-        <p>Connect your Spotify account to search for songs</p>
+        <p>Connectez Spotify pour rechercher des chansons.<br>Seul Matt peut synchroniser la playlist finale.</p>
         <button class="spotify-connect-btn" onclick="spotifyLogin()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-          Connect Spotify
+          Connecter Spotify
         </button>
       </div>
     </div>
+
     <div id="spotify-search-area" style="display:none">
-      <div class="spotify-note">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        Spotify connected
+      <div class="spotify-connected-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Spotify connecté
       </div>
       <div class="search-bar">
-        <input class="search-input" id="search-input" placeholder="Search songs or artists…" onkeydown="if(event.key==='Enter')doSearch()">
-        <button class="search-btn" id="search-btn" onclick="doSearch()">Search</button>
+        <input class="search-input" id="search-input" placeholder="Chercher un titre ou artiste…" onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="search-btn" id="search-btn" onclick="doSearch()">Chercher</button>
       </div>
-      <div id="search-results"><div class="search-state">Search for a song to nominate it</div></div>
+      <div id="search-results"><div class="search-state">Cherchez une chanson pour la nominer</div></div>
     </div>
   </div>
 
-  <!-- QUEUE -->
+  <!-- QUEUE VIEW -->
   <div class="view" id="view-queue">
-    <div class="section-label">Pending Votes</div>
-    <div id="queue-list"><div class="queue-empty">No songs in the voting queue yet</div></div>
+    <div class="section-label">En attente de votes</div>
+    <div id="queue-list"><div class="queue-empty">Aucune chanson dans la file — ajoutez-en une !</div></div>
   </div>
 
-  <!-- PLAYLIST -->
+  <!-- PLAYLIST VIEW -->
   <div class="view" id="view-playlist">
     <div class="playlist-header">
       <div class="playlist-stats">
-        <strong id="playlist-count">0 songs</strong>
-        <span id="playlist-duration">—</span>
+        <strong id="playlist-count">0 chansons</strong>
+        <span id="playlist-duration"></span>
       </div>
-      <div class="playlist-header-actions">
-        <!-- Sync button: Matt only, shown when Spotify connected -->
-        <button class="sync-btn" id="sync-btn" onclick="syncToSpotify()" style="display:none">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-          Sync to Spotify
-        </button>
-        <a id="open-spotify-link" href="#" target="_blank" class="open-spotify-btn" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-          Open in Spotify
-        </a>
-      </div>
+      <div class="playlist-header-actions" id="playlist-actions"></div>
     </div>
-    <div id="playlist-list"><div class="playlist-empty">No approved songs yet — start voting!</div></div>
+    <div id="playlist-list"><div class="playlist-empty">Aucune chanson approuvée — votez !</div></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
-import { initializeApp }                       from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+<!-- SVG icon helper -->
+<template id="spotify-icon">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+</template>
 
-// ── CONFIG ──────────────────────────────────────
-const FIREBASE_CONFIG = {
+<script type="module">
+import { initializeApp }                             from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, doc, setDoc, onSnapshot }     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const FB = {
   apiKey:            "AIzaSyCxz2PFW94vEN1uC9ZUM6XT7VB_IO1rtzY",
   authDomain:        "le-mans-playlist.firebaseapp.com",
   projectId:         "le-mans-playlist",
@@ -437,25 +551,28 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "16854485403",
   appId:             "1:16854485403:web:497eb752118560a975793e"
 };
+
 const CLIENT_ID    = 'cb4d4466b58741f49ef70b61a4db61dd';
 const REDIRECT_URI = 'https://mknapx.github.io/le-mans-playlist';
-const SCOPES       = 'playlist-read-private playlist-modify-private playlist-modify-public';
+
+// Search-only scope for everyone; Matt's sync uses playlist scope
+const SCOPE_SEARCH   = 'user-read-private';
+const SCOPE_PLAYLIST = 'user-read-private playlist-modify-private playlist-modify-public';
+
 const USERS = {
   Matt:  { pin: '8787', color: 'matt',  admin: true  },
   Alex:  { pin: '2222', color: 'alex',  admin: false },
   James: { pin: '3333', color: 'james', admin: false },
 };
 
-// ── FIREBASE ────────────────────────────────────
-const fbApp = initializeApp(FIREBASE_CONFIG);
-const db    = getFirestore(fbApp);
+// ── FIREBASE ────────────────────────────────────────────────────────────────
+const db           = getFirestore(initializeApp(FB));
 const STATE_DOC    = () => doc(db, 'playlist', 'state');
 const PLAYLIST_DOC = () => doc(db, 'playlist', 'approved');
 
-// ── STATE ───────────────────────────────────────
+// ── APP STATE ───────────────────────────────────────────────────────────────
 let currentUser       = null;
 let spotifyToken      = null;
-let spotifyUserId     = null;
 let pinBuffer         = '';
 let pendingUser       = '';
 let queue             = [];
@@ -465,7 +582,7 @@ let spotifyPlaylistId = null;
 let unsubState        = null;
 let unsubPlaylist     = null;
 
-// ── FIRESTORE ───────────────────────────────────
+// ── FIRESTORE ───────────────────────────────────────────────────────────────
 async function saveState() {
   await setDoc(STATE_DOC(), {
     queue,
@@ -477,39 +594,36 @@ async function savePlaylist() {
   await setDoc(PLAYLIST_DOC(), { tracks: playlist });
 }
 
-function subscribeFirestore() {
+function subscribe() {
   unsubState = onSnapshot(STATE_DOC(), snap => {
     if (!snap.exists()) return;
-    const d = snap.data();
+    const d       = snap.data();
     queue             = d.queue    || [];
     rejected          = new Set(d.rejected || []);
     spotifyPlaylistId = d.spotifyPlaylistId || null;
     renderQueueView();
-    renderPlaylistHeader();
-    updateQueueBadge();
-    // refresh search result buttons if visible
-    const sr = document.getElementById('search-results');
-    if (sr && sr.querySelector('.track-card')) renderAddView();
+    renderPlaylistActions();
+    updateBadge();
   });
   unsubPlaylist = onSnapshot(PLAYLIST_DOC(), snap => {
     playlist = snap.exists() ? (snap.data().tracks || []) : [];
     renderPlaylistView();
-    updateQueueBadge();
+    renderPlaylistActions();
+    updateBadge();
   });
 }
-function unsubscribeFirestore() {
-  if (unsubState)    { unsubState();    unsubState    = null; }
-  if (unsubPlaylist) { unsubPlaylist(); unsubPlaylist = null; }
+function unsubscribe() {
+  unsubState?.();    unsubState    = null;
+  unsubPlaylist?.(); unsubPlaylist = null;
 }
 
-// ── LOGIN ───────────────────────────────────────
+// ── LOGIN ────────────────────────────────────────────────────────────────────
 function selectUser(name) {
   pendingUser = name; pinBuffer = '';
   document.getElementById('user-select').style.display = 'none';
   document.getElementById('pin-screen').classList.add('active');
   document.getElementById('pin-username').textContent  = name;
-  updateDots();
-  document.getElementById('pin-error').textContent = '';
+  updateDots(); document.getElementById('pin-error').textContent = '';
 }
 function backToUsers() {
   document.getElementById('user-select').style.display = 'flex';
@@ -518,23 +632,21 @@ function backToUsers() {
 }
 function pinPress(d) { if (pinBuffer.length >= 4) return; pinBuffer += d; updateDots(); if (pinBuffer.length === 4) checkPin(); }
 function pinClear()  { pinBuffer = ''; updateDots(); }
-function pinBack()   { pinBuffer = pinBuffer.slice(0, -1); updateDots(); }
+function pinBack()   { pinBuffer = pinBuffer.slice(0,-1); updateDots(); }
 function updateDots() {
   for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById('d' + i);
-    dot.classList.toggle('filled', i < pinBuffer.length);
-    dot.classList.remove('error');
+    const el = document.getElementById('d'+i);
+    el.classList.toggle('filled', i < pinBuffer.length);
+    el.classList.remove('error');
   }
 }
 function checkPin() {
-  if (pinBuffer === USERS[pendingUser].pin) {
-    loginSuccess(pendingUser);
-  } else {
-    for (let i = 0; i < 4; i++) document.getElementById('d' + i).classList.add('error');
-    document.getElementById('pin-error').textContent = 'Incorrect PIN';
-    setTimeout(() => { pinBuffer = ''; updateDots(); document.getElementById('pin-error').textContent = ''; }, 900);
-  }
+  if (pinBuffer === USERS[pendingUser].pin) { loginSuccess(pendingUser); return; }
+  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.add('error');
+  document.getElementById('pin-error').textContent = 'PIN incorrect';
+  setTimeout(() => { pinBuffer=''; updateDots(); document.getElementById('pin-error').textContent=''; }, 900);
 }
+
 async function loginSuccess(name) {
   currentUser = name;
   sessionStorage.setItem('lemans-user', name);
@@ -542,13 +654,15 @@ async function loginSuccess(name) {
   document.getElementById('app').classList.add('active');
   document.getElementById('user-label').textContent     = name;
   document.getElementById('user-dot').className         = 'status-dot dot-' + USERS[name].color;
-  subscribeFirestore();
-  checkSpotifyCallback();
-  restoreSpotifyToken();
+  subscribe();
+  restoreToken();
+  await checkCallback();
+  renderAddView();
 }
+
 function logout() {
   currentUser = null; spotifyToken = null;
-  unsubscribeFirestore();
+  unsubscribe();
   sessionStorage.removeItem('lemans-user');
   sessionStorage.removeItem('lemans-token');
   document.getElementById('app').classList.remove('active');
@@ -558,34 +672,37 @@ function logout() {
   showView('add');
 }
 
-// ── SPOTIFY AUTH ────────────────────────────────
-function generateVerifier(len = 64) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  const arr   = new Uint8Array(len);
-  crypto.getRandomValues(arr);
-  return [...arr].map(b => chars[b % chars.length]).join('');
+// ── SPOTIFY PKCE ─────────────────────────────────────────────────────────────
+function genVerifier(n=64) {
+  const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+  const a=new Uint8Array(n); crypto.getRandomValues(a);
+  return [...a].map(b=>c[b%c.length]).join('');
 }
-async function generateChallenge(v) {
-  const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+async function genChallenge(v) {
+  const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
   return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
+
 async function spotifyLogin() {
-  const verifier  = generateVerifier();
-  const challenge = await generateChallenge(verifier);
+  const isAdmin  = USERS[currentUser]?.admin;
+  const scope    = isAdmin ? SCOPE_PLAYLIST : SCOPE_SEARCH;
+  const verifier = genVerifier();
+  const challenge= await genChallenge(verifier);
   sessionStorage.setItem('pkce_verifier', verifier);
   sessionStorage.setItem('lemans-user',   currentUser);
   const url = new URL('https://accounts.spotify.com/authorize');
   url.searchParams.set('client_id',             CLIENT_ID);
   url.searchParams.set('response_type',         'code');
   url.searchParams.set('redirect_uri',          REDIRECT_URI);
-  url.searchParams.set('scope',                 SCOPES);
+  url.searchParams.set('scope',                 scope);
   url.searchParams.set('code_challenge_method', 'S256');
   url.searchParams.set('code_challenge',        challenge);
   window.location.href = url.toString();
 }
-async function checkSpotifyCallback() {
-  const params = new URLSearchParams(window.location.search);
-  const code   = params.get('code');
+
+async function checkCallback() {
+  const params   = new URLSearchParams(window.location.search);
+  const code     = params.get('code');
   if (!code) return;
   window.history.replaceState({}, '', window.location.pathname);
   const verifier = sessionStorage.getItem('pkce_verifier');
@@ -594,134 +711,135 @@ async function checkSpotifyCallback() {
     const res  = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ grant_type:'authorization_code', code, redirect_uri:REDIRECT_URI, client_id:CLIENT_ID, code_verifier:verifier })
+      body: new URLSearchParams({
+        grant_type:'authorization_code', code,
+        redirect_uri:REDIRECT_URI, client_id:CLIENT_ID, code_verifier:verifier
+      })
     });
     const data = await res.json();
     if (data.access_token) {
       spotifyToken = data.access_token;
       sessionStorage.setItem('lemans-token', spotifyToken);
       sessionStorage.removeItem('pkce_verifier');
-      await fetchSpotifyUser();
       renderAddView();
-      renderPlaylistHeader();
-      showToast('Spotify connected!', 'success');
+      renderPlaylistActions();
+      showToast('Spotify connecté !', 'success');
     }
-  } catch { showToast('Spotify auth failed', 'error'); }
+  } catch { showToast('Erreur Spotify', 'error'); }
 }
-function restoreSpotifyToken() {
+
+function restoreToken() {
   const t = sessionStorage.getItem('lemans-token');
-  if (t) { spotifyToken = t; fetchSpotifyUser().then(() => { renderAddView(); renderPlaylistHeader(); }); }
+  if (t) { spotifyToken = t; }
 }
-async function fetchSpotifyUser() {
-  const res = await spotifyFetch('https://api.spotify.com/v1/me');
-  if (res) spotifyUserId = res.id;
-}
-async function spotifyFetch(url, opts = {}) {
+
+async function spotifyFetch(url, opts={}) {
   if (!spotifyToken) return null;
-  const res = await fetch(url, { ...opts, headers: { ...(opts.headers||{}), Authorization:'Bearer '+spotifyToken } });
-  if (res.status === 401) { spotifyToken = null; sessionStorage.removeItem('lemans-token'); renderAddView(); renderPlaylistHeader(); return null; }
-  if (!res.ok) return null;
-  return res.json().catch(() => null);
+  const res = await fetch(url, { ...opts, headers:{...(opts.headers||{}), Authorization:'Bearer '+spotifyToken} });
+  if (res.status === 401) {
+    spotifyToken = null; sessionStorage.removeItem('lemans-token');
+    renderAddView(); renderPlaylistActions(); return null;
+  }
+  if (!res.ok) {
+    const err = await res.json().catch(()=>({}));
+    console.error('Spotify error', res.status, err);
+    return null;
+  }
+  return res.json().catch(()=>null);
 }
 
-// ── SPOTIFY PLAYLIST ────────────────────────────
-async function ensurePlaylist() {
-  if (spotifyPlaylistId) return spotifyPlaylistId;
-  if (!USERS[currentUser]?.admin) return null;
-  const res = await spotifyFetch(`https://api.spotify.com/v1/users/${spotifyUserId}/playlists`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name:'🏁 Le Mans Road Trip 2025', description:'Our voted road trip playlist', public:false, collaborative:true })
-  });
-  if (res?.id) { spotifyPlaylistId = res.id; await saveState(); return res.id; }
-  return null;
-}
-
-async function addToSpotifyPlaylist(trackId) {
-  if (!spotifyToken) return;
-  const pid = await ensurePlaylist();
-  if (!pid) return;
-  await spotifyFetch(`https://api.spotify.com/v1/playlists/${pid}/tracks`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ uris: [`spotify:track:${trackId}`] })
-  });
-}
-
-async function removeFromSpotifyPlaylist(trackId) {
-  if (!spotifyToken || !spotifyPlaylistId) return;
-  await spotifyFetch(`https://api.spotify.com/v1/playlists/${spotifyPlaylistId}/tracks`, {
-    method: 'DELETE', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tracks: [{ uri:`spotify:track:${trackId}` }] })
-  });
-}
-
-// ── SYNC ALL TO SPOTIFY ─────────────────────────
+// ── SYNC TO SPOTIFY (Matt only) ──────────────────────────────────────────────
 async function syncToSpotify() {
-  if (!USERS[currentUser]?.admin || !spotifyToken) return;
-  if (!playlist.length) { showToast('No approved songs to sync', ''); return; }
+  if (!USERS[currentUser]?.admin) return;
+  if (!spotifyToken) { showToast('Connectez d\'abord Spotify', 'error'); return; }
+  if (!playlist.length) { showToast('Aucune chanson approuvée', ''); return; }
 
   const btn = document.getElementById('sync-btn');
+  if (!btn) return;
   btn.disabled  = true;
-  btn.innerHTML = '<span class="spinner spinner-green"></span>Syncing…';
+  btn.innerHTML = '<span class="spinner"></span>Synchronisation…';
 
   try {
-    // 1. Create playlist if needed
-    const pid = await ensurePlaylist();
-    if (!pid) { showToast('Could not create Spotify playlist', 'error'); return; }
+    // 1. Get Spotify user ID
+    const me = await spotifyFetch('https://api.spotify.com/v1/me');
+    if (!me?.id) { showToast('Impossible d\'obtenir le profil Spotify', 'error'); return; }
 
-    // 2. Get current tracks already in the Spotify playlist to avoid duplicates
-    let existingUris = new Set();
+    // 2. Create playlist if needed
+    let pid = spotifyPlaylistId;
+    if (!pid) {
+      const pl = await spotifyFetch(`https://api.spotify.com/v1/users/${me.id}/playlists`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:        '🏁 Le Mans Road Trip 2025',
+          description: 'Notre playlist de route collaborative',
+          public:      false,
+        })
+      });
+      if (!pl?.id) { showToast('Impossible de créer la playlist', 'error'); return; }
+      pid = pl.id;
+      spotifyPlaylistId = pid;
+      await saveState();
+    }
+
+    // 3. Fetch tracks already in the playlist
+    const existing = new Set();
     let offset = 0;
     while (true) {
-      const res = await spotifyFetch(`https://api.spotify.com/v1/playlists/${pid}/tracks?limit=100&offset=${offset}&fields=items(track(uri)),next`);
-      if (!res) break;
-      res.items.forEach(item => { if (item?.track?.uri) existingUris.add(item.track.uri); });
-      if (!res.next) break;
+      const r = await spotifyFetch(`https://api.spotify.com/v1/playlists/${pid}/tracks?limit=100&offset=${offset}&fields=items(track(uri)),next`);
+      if (!r) break;
+      r.items?.forEach(i => { if (i?.track?.uri) existing.add(i.track.uri); });
+      if (!r.next) break;
       offset += 100;
     }
 
-    // 3. Add only tracks not already in the playlist, in batches of 100
-    const toAdd = playlist
-      .map(s => `spotify:track:${s.id}`)
-      .filter(uri => !existingUris.has(uri));
-
-    for (let i = 0; i < toAdd.length; i += 100) {
-      const batch = toAdd.slice(i, i + 100);
+    // 4. Add missing tracks in batches of 100
+    const toAdd = playlist.map(s=>`spotify:track:${s.id}`).filter(u=>!existing.has(u));
+    for (let i=0; i<toAdd.length; i+=100) {
       await spotifyFetch(`https://api.spotify.com/v1/playlists/${pid}/tracks`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uris: batch })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uris: toAdd.slice(i,i+100) })
       });
     }
 
-    renderPlaylistHeader();
-    const added = toAdd.length;
-    showToast(added > 0 ? `Synced ${added} song${added!==1?'s':''} to Spotify ✓` : 'Spotify already up to date ✓', 'success');
-  } catch (e) {
-    showToast('Sync failed — try again', 'error');
+    renderPlaylistActions();
+    showToast(toAdd.length ? `${toAdd.length} chanson${toAdd.length>1?'s':''} synchronisée${toAdd.length>1?'s':''} ✓` : 'Spotify déjà à jour ✓', 'success');
+  } catch(e) {
+    console.error(e);
+    showToast('Erreur de synchronisation', 'error');
   } finally {
-    btn.disabled  = false;
-    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Sync to Spotify`;
+    if (document.getElementById('sync-btn')) renderPlaylistActions();
   }
 }
 
-// ── NAV ─────────────────────────────────────────
-function showView(name) {
-  ['add','queue','playlist'].forEach(v => {
-    document.getElementById('view-' + v).classList.toggle('active', v === name);
-    document.getElementById('nav-'  + v).classList.toggle('active', v === name);
+async function removeFromSpotify(trackId) {
+  if (!spotifyToken || !spotifyPlaylistId) return;
+  await spotifyFetch(`https://api.spotify.com/v1/playlists/${spotifyPlaylistId}/tracks`, {
+    method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tracks:[{ uri:`spotify:track:${trackId}` }] })
   });
 }
 
-// ── SEARCH ──────────────────────────────────────
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function showView(name) {
+  ['add','queue','playlist'].forEach(v => {
+    document.getElementById('view-'+v).classList.toggle('active', v===name);
+    document.getElementById('nav-' +v).classList.toggle('active', v===name);
+  });
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────────────────
 async function doSearch() {
   const q = document.getElementById('search-input').value.trim();
   if (!q || !spotifyToken) return;
   const btn = document.getElementById('search-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Searching';
-  document.getElementById('search-results').innerHTML = '<div class="search-state"><span class="spinner"></span> Searching Spotify…</div>';
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+  document.getElementById('search-results').innerHTML='<div class="search-state"><span class="spinner"></span> Recherche…</div>';
   const res = await spotifyFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=8`);
-  btn.disabled = false; btn.textContent = 'Search';
+  btn.disabled=false; btn.textContent='Chercher';
   if (!res?.tracks?.items?.length) {
-    document.getElementById('search-results').innerHTML = '<div class="search-state">No results found</div>';
+    document.getElementById('search-results').innerHTML='<div class="search-state">Aucun résultat</div>';
     return;
   }
   renderSearchResults(res.tracks.items);
@@ -732,17 +850,17 @@ function renderSearchResults(tracks) {
   el.innerHTML = '';
   tracks.forEach(t => {
     const art  = t.album.images[2]?.url || t.album.images[0]?.url || '';
-    const mins = Math.floor(t.duration_ms / 60000);
-    const secs = Math.floor((t.duration_ms % 60000) / 1000).toString().padStart(2,'0');
-    const inQ  = queue.find(s => s.id === t.id);
-    const inP  = playlist.find(s => s.id === t.id);
+    const mins = Math.floor(t.duration_ms/60000);
+    const secs = Math.floor((t.duration_ms%60000)/1000).toString().padStart(2,'0');
+    const inQ  = queue.find(s=>s.id===t.id);
+    const inP  = playlist.find(s=>s.id===t.id);
     const isR  = rejected.has(t.id);
-    let btn = '';
-    if (isR)  btn = `<button class="nominate-btn rejected" disabled>Rejected</button>`;
-    else if (inP) btn = `<button class="nominate-btn already"  disabled>In Playlist</button>`;
-    else if (inQ) btn = `<button class="nominate-btn already"  disabled>In Queue</button>`;
-    else          btn = `<button class="nominate-btn" onclick="nominate('${t.id}','${esc(t.name)}','${esc(t.artists[0].name)}','${esc(art)}',${t.duration_ms})">Nominate</button>`;
-    el.innerHTML += `
+    let btn='';
+    if (isR)      btn=`<button class="nominate-btn rejected" disabled>Rejeté</button>`;
+    else if (inP) btn=`<button class="nominate-btn already"  disabled>Approuvé</button>`;
+    else if (inQ) btn=`<button class="nominate-btn already"  disabled>En attente</button>`;
+    else          btn=`<button class="nominate-btn" onclick="nominate('${t.id}','${esc(t.name)}','${esc(t.artists[0].name)}','${esc(art)}',${t.duration_ms})">Nominer</button>`;
+    el.innerHTML+=`
       <div class="track-card">
         <img class="track-art" src="${art}" alt="" onerror="this.style.opacity=0">
         <div class="track-info">
@@ -757,100 +875,114 @@ function renderSearchResults(tracks) {
 
 function esc(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
-// ── NOMINATIONS & VOTING ────────────────────────
+// ── NOMINATE & VOTE ──────────────────────────────────────────────────────────
 async function nominate(id, name, artist, art, duration_ms) {
-  if (queue.find(s=>s.id===id) || playlist.find(s=>s.id===id) || rejected.has(id)) return;
-  queue.push({ id, name, artist, art, duration_ms, nominatedBy:currentUser, votes:{ [currentUser]:1 } });
+  if (queue.find(s=>s.id===id)||playlist.find(s=>s.id===id)||rejected.has(id)) return;
+  queue.push({ id, name, artist, art, duration_ms, nominatedBy:currentUser, votes:{[currentUser]:1} });
   await saveState();
-  showToast(`"${name}" added to voting queue!`, 'success');
+  showToast(`« ${name} » ajouté à la file !`, 'success');
 }
 
 async function vote(songId, val) {
-  const song = queue.find(s => s.id === songId);
-  if (!song || song.votes[currentUser] !== undefined) return;
+  const song = queue.find(s=>s.id===songId);
+  if (!song || song.votes[currentUser]!==undefined) return;
   song.votes[currentUser] = val;
   const yes = Object.values(song.votes).filter(v=>v=== 1).length;
   const no  = Object.values(song.votes).filter(v=>v===-1).length;
   if (yes >= 2) {
-    queue    = queue.filter(s => s.id !== songId);
+    queue    = queue.filter(s=>s.id!==songId);
     playlist = [...playlist, song];
     await saveState(); await savePlaylist();
-    if (spotifyToken) addToSpotifyPlaylist(song.id);
-    showToast(`"${song.name}" approved! 🎉`, 'success');
+    showToast(`« ${song.name} » approuvé ! 🎉`, 'success');
   } else if (no >= 2) {
-    queue = queue.filter(s => s.id !== songId);
+    queue = queue.filter(s=>s.id!==songId);
     rejected.add(songId);
     await saveState();
-    showToast(`"${song.name}" rejected`, 'error');
+    showToast(`« ${song.name} » rejeté`, 'error');
   } else {
     await saveState();
   }
 }
 
-async function removeFromPlaylist(songId) {
+async function removeTrack(songId) {
   if (!USERS[currentUser]?.admin) return;
-  const song = playlist.find(s => s.id === songId);
+  const song = playlist.find(s=>s.id===songId);
   if (!song) return;
-  if (!confirm(`Remove "${song.name}" from the playlist?`)) return;
-  playlist = playlist.filter(s => s.id !== songId);
+  if (!confirm(`Supprimer « ${song.name} » de la playlist ?`)) return;
+  playlist = playlist.filter(s=>s.id!==songId);
   await savePlaylist();
-  if (spotifyToken) removeFromSpotifyPlaylist(songId);
-  showToast(`"${song.name}" removed`, 'error');
+  if (spotifyToken && spotifyPlaylistId) removeFromSpotify(songId);
+  showToast(`« ${song.name} » supprimé`, 'error');
 }
 
-// ── RENDER ──────────────────────────────────────
+// ── RENDER ───────────────────────────────────────────────────────────────────
 function renderAddView() {
   document.getElementById('spotify-connect-area').style.display = spotifyToken ? 'none'  : 'block';
   document.getElementById('spotify-search-area').style.display  = spotifyToken ? 'block' : 'none';
 }
 
-function renderPlaylistHeader() {
-  const isAdmin   = USERS[currentUser]?.admin;
-  const syncBtn   = document.getElementById('sync-btn');
-  const linkBtn   = document.getElementById('open-spotify-link');
-  // Sync button: Matt + Spotify connected
-  syncBtn.style.display = (isAdmin && spotifyToken) ? 'inline-flex' : 'none';
-  // Open in Spotify: everyone, once playlist exists
+function renderPlaylistActions() {
+  const el      = document.getElementById('playlist-actions');
+  const isAdmin = USERS[currentUser]?.admin;
+  el.innerHTML  = '';
+
+  if (isAdmin) {
+    if (spotifyToken) {
+      // Sync button
+      el.innerHTML += `<button class="sync-btn" id="sync-btn" onclick="syncToSpotify()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Sync Spotify
+      </button>`;
+    } else {
+      // Prompt Matt to connect Spotify for sync
+      el.innerHTML += `<button class="sync-connect-btn" onclick="spotifyLogin()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Connecter pour sync
+      </button>`;
+    }
+  }
+
+  // Open in Spotify link (everyone, once playlist exists)
   if (spotifyPlaylistId) {
-    linkBtn.href         = `https://open.spotify.com/playlist/${spotifyPlaylistId}`;
-    linkBtn.style.display = 'inline-flex';
-  } else {
-    linkBtn.style.display = 'none';
+    el.innerHTML += `<a href="https://open.spotify.com/playlist/${spotifyPlaylistId}" target="_blank" class="open-spotify-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Ouvrir Spotify
+    </a>`;
   }
 }
 
 function renderQueueView() {
   const el = document.getElementById('queue-list');
-  if (!queue.length) { el.innerHTML = '<div class="queue-empty">No songs in the voting queue yet</div>'; return; }
-  el.innerHTML = '';
+  if (!queue.length) { el.innerHTML='<div class="queue-empty">Aucune chanson dans la file — ajoutez-en une !</div>'; return; }
+  el.innerHTML='';
   queue.forEach(song => {
     const yes    = Object.values(song.votes).filter(v=>v=== 1).length;
     const no     = Object.values(song.votes).filter(v=>v===-1).length;
     const myVote = song.votes[currentUser];
     const isOwn  = song.nominatedBy === currentUser;
-    const mins   = Math.floor(song.duration_ms / 60000);
-    const secs   = Math.floor((song.duration_ms % 60000) / 1000).toString().padStart(2,'0');
-    const pips   = Object.keys(USERS).map(u => {
-      const v = song.votes[u];
-      if (v === 1)  return `<div class="vote-pip yes" title="${u}: Yes"></div>`;
-      if (v === -1) return `<div class="vote-pip no"  title="${u}: No"></div>`;
-      return `<div class="vote-pip" title="${u}: Not voted"></div>`;
+    const mins   = Math.floor(song.duration_ms/60000);
+    const secs   = Math.floor((song.duration_ms%60000)/1000).toString().padStart(2,'0');
+    const pips   = Object.keys(USERS).map(u=>{
+      const v=song.votes[u];
+      if(v=== 1) return `<div class="vote-pip yes" title="${u}: Oui"></div>`;
+      if(v===-1) return `<div class="vote-pip no"  title="${u}: Non"></div>`;
+      return `<div class="vote-pip" title="${u}: En attente"></div>`;
     }).join('');
-    let actions = '';
+    let actions='';
     if (isOwn) {
-      actions = `<div class="own-vote-label">You nominated this — your vote is counted ✓</div>`;
-    } else if (myVote !== undefined) {
-      actions = `<div class="queue-actions">
-        <button class="vote-btn yes-btn ${myVote===1?'voted-yes':''}"  disabled>✓ Yes</button>
-        <button class="vote-btn no-btn  ${myVote===-1?'voted-no':''}" disabled>✗ No</button>
+      actions=`<div class="own-vote-label">Vous avez nominé cette chanson — votre vote est compté ✓</div>`;
+    } else if (myVote!==undefined) {
+      actions=`<div class="queue-actions">
+        <button class="vote-btn yes-btn ${myVote===1?'voted-yes':''}"  disabled>✓ Oui</button>
+        <button class="vote-btn no-btn  ${myVote===-1?'voted-no':''}" disabled>✗ Non</button>
       </div>`;
     } else {
-      actions = `<div class="queue-actions">
-        <button class="vote-btn yes-btn" onclick="vote('${song.id}',1)">✓ Yes</button>
-        <button class="vote-btn no-btn"  onclick="vote('${song.id}',-1)">✗ No</button>
+      actions=`<div class="queue-actions">
+        <button class="vote-btn yes-btn" onclick="vote('${song.id}',1)">✓ Oui</button>
+        <button class="vote-btn no-btn"  onclick="vote('${song.id}',-1)">✗ Non</button>
       </div>`;
     }
-    el.innerHTML += `
+    el.innerHTML+=`
       <div class="queue-card">
         <div class="queue-card-top">
           <img class="track-art" src="${song.art}" alt="" onerror="this.style.opacity=0">
@@ -859,12 +991,12 @@ function renderQueueView() {
             <div class="track-artist">${song.artist} · ${mins}:${secs}</div>
             <div class="queue-nominator">
               <span class="nominator-dot dot-${USERS[song.nominatedBy]?.color}"></span>
-              Nominated by ${song.nominatedBy}
+              Nominé par ${song.nominatedBy}
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0">
             <div class="vote-pips">${pips}</div>
-            <span class="vote-label">${yes} yes · ${no} no</span>
+            <span class="vote-tally">${yes} oui · ${no} non</span>
           </div>
         </div>
         ${actions}
@@ -876,58 +1008,56 @@ function renderPlaylistView() {
   const el      = document.getElementById('playlist-list');
   const countEl = document.getElementById('playlist-count');
   const durEl   = document.getElementById('playlist-duration');
-  const totalMs = playlist.reduce((a,s) => a + s.duration_ms, 0);
-  const h = Math.floor(totalMs / 3600000);
-  const m = Math.floor((totalMs % 3600000) / 60000);
-  countEl.textContent = `${playlist.length} song${playlist.length !== 1 ? 's' : ''}`;
-  durEl.textContent   = totalMs ? (h ? `${h}h ${m}m` : `${m} min`) : '';
-  renderPlaylistHeader();
-  if (!playlist.length) { el.innerHTML = '<div class="playlist-empty">No approved songs yet — start voting!</div>'; return; }
+  const ms      = playlist.reduce((a,s)=>a+s.duration_ms,0);
+  const h       = Math.floor(ms/3600000);
+  const m       = Math.floor((ms%3600000)/60000);
+  countEl.textContent = `${playlist.length} chanson${playlist.length!==1?'s':''}`;
+  durEl.textContent   = ms ? (h?`${h}h ${m}m`:`${m} min`) : '';
+  if (!playlist.length) { el.innerHTML='<div class="playlist-empty">Aucune chanson approuvée — votez !</div>'; return; }
   const isAdmin = USERS[currentUser]?.admin;
   el.innerHTML  = '';
-  playlist.forEach((song, i) => {
-    const mins = Math.floor(song.duration_ms / 60000);
-    const secs = Math.floor((song.duration_ms % 60000) / 1000).toString().padStart(2,'0');
-    el.innerHTML += `
+  playlist.forEach((song,i)=>{
+    const mins=Math.floor(song.duration_ms/60000);
+    const secs=Math.floor((song.duration_ms%60000)/1000).toString().padStart(2,'0');
+    el.innerHTML+=`
       <div class="playlist-item">
-        <div class="playlist-num">${i + 1}</div>
+        <div class="playlist-num">${i+1}</div>
         <img class="track-art" src="${song.art}" alt="" onerror="this.style.opacity=0">
         <div class="playlist-track-info">
           <div class="track-name">${song.name}</div>
           <div class="track-artist">${song.artist} · ${mins}:${secs}</div>
         </div>
-        ${isAdmin ? `<button class="remove-btn" onclick="removeFromPlaylist('${song.id}')" title="Remove">🗑</button>` : ''}
+        ${isAdmin?`<button class="remove-btn" onclick="removeTrack('${song.id}')" title="Supprimer">🗑</button>`:''}
       </div>`;
   });
 }
 
-function updateQueueBadge() {
+function updateBadge() {
   const badge    = document.getElementById('queue-badge');
-  const voteable = queue.filter(s => s.nominatedBy !== currentUser && s.votes[currentUser] === undefined).length;
+  const voteable = queue.filter(s=>s.nominatedBy!==currentUser && s.votes[currentUser]===undefined).length;
   badge.textContent   = voteable;
-  badge.style.display = voteable > 0 ? 'flex' : 'none';
+  badge.style.display = voteable>0 ? 'flex' : 'none';
 }
 
-// ── TOAST ───────────────────────────────────────
-let toastTimer;
-function showToast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className   = 'toast show ' + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+// ── TOAST ────────────────────────────────────────────────────────────────────
+let toastT;
+function showToast(msg, type='') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show '+type;
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('show'),2800);
 }
 
-// ── EXPOSE ──────────────────────────────────────
-Object.assign(window, {
-  selectUser, backToUsers, pinPress, pinClear, pinBack,
-  logout, showView, spotifyLogin, doSearch,
-  nominate, vote, removeFromPlaylist, syncToSpotify
+// ── EXPOSE ───────────────────────────────────────────────────────────────────
+Object.assign(window,{
+  selectUser,backToUsers,pinPress,pinClear,pinBack,
+  logout,showView,spotifyLogin,doSearch,
+  nominate,vote,removeTrack,syncToSpotify
 });
 
-// ── INIT ────────────────────────────────────────
-(async () => {
-  const saved = sessionStorage.getItem('lemans-user');
+// ── INIT ─────────────────────────────────────────────────────────────────────
+(async()=>{
+  const saved=sessionStorage.getItem('lemans-user');
   if (saved && USERS[saved]) await loginSuccess(saved);
 })();
 </script>
